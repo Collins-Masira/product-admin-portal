@@ -1,14 +1,37 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <h2>Product Admin</h2>
+      <h2>React Product Admin Portal</h2>
 
-      <div>
-        <Link to="/">Home</Link>
-        <Link to="/add-product">Add Product</Link>
-        <Link to="/products">Products</Link>
+      <div className="nav-links">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "active-link" : ""
+          }
+        >
+          Home
+        </NavLink>
+
+        <NavLink
+          to="/add-product"
+          className={({ isActive }) =>
+            isActive ? "active-link" : ""
+          }
+        >
+          Add Product
+        </NavLink>
+
+        <NavLink
+          to="/products"
+          className={({ isActive }) =>
+            isActive ? "active-link" : ""
+          }
+        >
+          Products
+        </NavLink>
       </div>
     </nav>
   );

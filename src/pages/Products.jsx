@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import useProducts from "../hooks/useProducts";
 
 function Products() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { products, setProducts, loading, error } = useProducts();
 
   const navigate = useNavigate();
-
-  // GET PRODUCTS
-  useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log("Error fetching products:", error);
-        setLoading(false);
-      });
-  }, []);
 
   // DELETE PRODUCT
   function handleDelete(id) {
@@ -28,9 +13,8 @@ function Products() {
       method: "DELETE",
     })
       .then(() => {
-        // update UI instantly after delete
-        setProducts((prev) =>
-          prev.filter((product) => product.id !== id)
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== id)
         );
       })
       .catch((error) => {
@@ -40,6 +24,10 @@ function Products() {
 
   if (loading) {
     return <h2 style={{ padding: "20px" }}>Loading products...</h2>;
+  }
+
+  if (error) {
+    return <h2 style={{ padding: "20px", color: "red" }}>{error}</h2>;
   }
 
   return (
@@ -55,7 +43,7 @@ function Products() {
               <button
                 onClick={() => navigate(`/products/${product.id}`)}
               >
-                View
+                View Details
               </button>
 
               <button
